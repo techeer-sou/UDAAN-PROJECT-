@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Website</title>
+    <style>
+        /* --- General Styles --- */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* Gradient background for a vibrant feel */
+            background: linear-gradient(135deg, #a8c0ff, #3f2b96); /* Blue to Purple gradient */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        header, footer {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            text-align: center;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+            color: #2c3e50;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #2c3e50; /* Darker heading color */
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            /* Card-like appearance */
+            background-color: rgba(255, 255, 255, 0.95); /* Nearly opaque white */
+            padding: 2.5rem; /* Increased padding */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Prominent shadow */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            animation: fadeIn 0.6s ease-out; /* Slightly longer animation */
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); } /* More pronounced initial displacement */
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            color: #34495e; /* Deeper heading color */
+            margin-top: 0;
+            margin-bottom: 2rem; /* More space below heading */
+            font-size: 2rem; /* Larger heading */
+        }
+
+        /* --- Form Styles (Page 1) --- */
+        #login-form-page {
+            max-width: 450px; /* Slightly wider form */
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem; /* Increased spacing */
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem; /* More space */
+            font-weight: 600; /* Bolder label */
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.85rem; /* More padding */
+            border: 1px solid #c9d2d8; /* Softer border */
+            border-radius: 8px; /* More rounded input fields */
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #f8faff; /* Slightly off-white background */
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #6a82fb; /* Primary color focus */
+            box-shadow: 0 0 0 3px rgba(106, 130, 251, 0.3); /* Soft glow on focus */
+        }
+
+        .error-message {
+            display: block;
+            color: #e74c3c; /* Alert red */
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+        }
+
+        /* --- Button Styles --- */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.9rem; /* More padding */
+            font-size: 1.1rem; /* Larger font */
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #6a82fb, #fc5c7d); /* Vibrant gradient button */
+            border: none;
+            border-radius: 8px; /* Rounded buttons */
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Button shadow */
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #5c75e6, #eb496e); /* Slightly darker gradient on hover */
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Role Selection Styles (Page 2) --- */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Increased gap */
+            max-width: 600px; /* Wider button group */
+            margin: auto;
+        }
+
+        .role-btn {
+            padding: 2rem; /* Larger buttons */
+            font-size: 1.3rem; /* Larger text */
+        }
+        .role-btn:nth-child(2) { /* Different color for teacher button */
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+        .role-btn:nth-child(2):hover {
+            background: linear-gradient(45deg, #27ae60, #219d55);
+        }
+
+
+        @media (min-width: 768px) {
+            .button-group {
+                flex-direction: row;
+            }
+        }
+
+        /* --- Animation Page Styles (Page 3) --- */
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+            position: relative;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9); /* Consistent page background */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* To contain canvas elements */
+        }
+
+        #gravity-canvas {
+            display: block;
+            width: 100%;
+            height: 60vh;
+            background: linear-gradient(to bottom, #87ceeb, #a8c0ff); /* Sky-like gradient */
+            border-bottom: 2px solid #34495e; /* Stronger border */
+            cursor: pointer;
+        }
+
+        .info-sidebar {
+            position: absolute;
+            top: 1.5rem; /* Adjusted position */
+            right: 1.5rem; /* Adjusted position */
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 10; /* Ensure info boxes are above canvas */
+        }
+
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 1.2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            margin-bottom: 0.6rem;
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+        .info-box p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .formula-label {
+            font-style: italic;
+            color: #2c3e50;
+            text-align: right;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #start-animation-btn {
+            position: absolute;
+            bottom: 1.5rem; /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            min-width: 180px; /* Ensure button has a good minimum width */
+            padding: 1rem 2rem; /* More padding */
+            font-size: 1.15rem;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .info-sidebar {
+                position: static;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1.5rem;
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            .info-box {
+                width: calc(50% - 1.5rem); /* Adjust width for small screens */
+                margin: 0.5rem; /* Add some margin */
+                padding: 1rem;
+            }
+            .formula-label {
+                margin: 0.5rem;
+            }
+            #start-animation-btn {
+                bottom: 1rem;
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            .page {
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome</h1>
+    </header>
+
+    <main class="container">
+        <section id="login-form-page" class="page active">
+            <h2>User Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email ID</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <span class="error-message"></span>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </section>
+
+        <section id="role-selection-page" class="page">
+            <h2>Select Your Role</h2>
+            <div class="button-group">
+                <button id="student-btn" class="btn role-btn">Login as Student</button>
+                <button id="teacher-btn" class="btn role-btn">Login as Teacher</button>
+            </div>
+        </section>
+
+        <section id="animation-page" class="page">
+            <h2 style="margin-top: 0; margin-bottom: 1rem;">Gravitational Animation</h2>
+            <div class="animation-container">
+                <canvas id="gravity-canvas"></canvas>
+        
+                <div class="info-sidebar">
+                    <div class="info-box">
+                        <h3>Gravitational Constant</h3>
+                        <p>$$G = 6.674*10^{-11} N(m/kg)^2</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h3>Force Formula</h3>
+                        <p>F =G*{m1*m2}/{r^2}</p>
+                    </div>
+                    <p class="formula-label">M = Mass of the Earth</p>
+                </div>
+        
+                <button id="start-animation-btn" class="btn">Start Animation</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy;UDAAN-Giving Every Child The Wings To Learn</p>
+    </footer>
+
+    <script>
+        /*
+            script.js - Main JavaScript file
+            - Handles form validation
+            - Manages page navigation
+            - Implements the gravitational animation logic
+        */
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Page Navigation Logic ---
+            const loginFormPage = document.getElementById('login-form-page');
+            const roleSelectionPage = document.getElementById('role-selection-page');
+            const animationPage = document.getElementById('animation-page');
+            
+            const loginForm = document.getElementById('login-form');
+            const studentBtn = document.getElementById('student-btn');
+            
+            // Display the first page by default
+            showPage(loginFormPage);
+        
+            function showPage(page) {
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(p => p.classList.remove('active'));
+                page.classList.add('active');
+            }
+        
+            // --- Form Validation (Page 1) ---
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                let isValid = true;
+                const username = document.getElementById('username');
+                const email = document.getElementById('email');
+                const password = document.getElementById('password');
+        
+                // Clear previous errors
+                document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+                // Check for empty fields
+                if (username.value.trim() === '') {
+                    displayError(username, 'Username is required.');
+                    isValid = false;
+                }
+                if (email.value.trim() === '') {
+                    displayError(email, 'Email is required.');
+                    isValid = false;
+                }
+                if (password.value.trim() === '') {
+                    displayError(password, 'Password is required.');
+                    isValid = false;
+                }
+        
+                // Validate email format
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email.value)) {
+                    displayError(email, 'Please enter a valid email address.');
+                    isValid = false;
+                }
+        
+                if (isValid) {
+                    // Simulate successful login and transition to the next page
+                    console.log('Login successful. Proceeding to role selection.');
+                    showPage(roleSelectionPage);
+                }
+            });
+        
+            function displayError(inputElement, message) {
+                const errorElement = inputElement.nextElementSibling;
+                if (errorElement) {
+                    errorElement.textContent = message;
+                }
+            }
+        
+            // --- Role Selection Navigation (Page 2) ---
+            studentBtn.addEventListener('click', () => {
+                showPage(animationPage);
+                // Call initializeAnimation() after the canvas element is visible
+                // and the main tag is present
+                initializeAnimation(); 
+                draw(); // Draw initial state
+            });
+
+            // --- Gravitational Animation (Page 3) ---
+            const canvas = document.getElementById('gravity-canvas');
+            const ctx = canvas.getContext('2d');
+            const startBtn = document.getElementById('start-animation-btn');
+        
+            // Animation variables
+            let animationId;
+            let isAnimating = false;
+            
+            const g = 9.8; // Acceleration due to gravity (m/s^2)
+            const scale = 100; // Pixels per meter for visualization
+            const earthRadius = 50; // Pixels
+            const ballRadius = 10; // Pixels
+            
+            let ball = {
+                x: 0,
+                y: 0,
+                initialHeight: 0,
+                velocity: 0,
+                time: 0,
+                initialY: 0
+            };
+        
+            // Initialize canvas dimensions and ball position on load
+            function initializeAnimation() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                ball.x = canvas.width / 2;
+                ball.y = 50; // Initial position near the top
+                ball.initialY = ball.y;
+                ball.initialHeight = canvas.height - 50 - earthRadius; // Distance from the ball's center to the Earth's top
+                ball.velocity = 0;
+                ball.time = 0;
+            }
+        
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+                
+                // Draw Earth
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height - earthRadius, earthRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#6c757d'; // Earth color
+                ctx.fill();
+                ctx.closePath();
+        
+                // Draw Ball
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ballRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#e74c3c'; // Ball color - vibrant red
+                ctx.fill();
+                ctx.closePath();
+            }
+        
+            function update() {
+                if (!isAnimating) return;
+        
+                // Calculate new position based on free-fall equation: s = ut + 0.5at^2
+                ball.time += 0.016; // Simulate time in seconds (approx 60fps)
+                let distanceFallen = 0.5 * g * ball.time * ball.time * scale;
+                ball.y = ball.initialY + distanceFallen;
+        
+                // Stop animation when the ball hits the Earth
+                if (ball.y >= canvas.height - earthRadius - ballRadius) {
+                    isAnimating = false;
+                    cancelAnimationFrame(animationId);
+                    console.log('Animation finished.');
+                    startBtn.textContent = 'Start Animation';
+                }
+            }
+        
+            function animate() {
+                update();
+                draw();
+                if (isAnimating) {
+                    animationId = requestAnimationFrame(animate);
+                }
+            }
+        
+            startBtn.addEventListener('click', () => {
+                if (isAnimating) {
+                    // Pause or reset
+                    isAnimating = false;
+                    cancelAnimationFrame(animationId);
+                    startBtn.textContent = 'Start Animation';
+                } else {
+                    // Start the animation
+                    initializeAnimation();
+                    isAnimating = true;
+                    startBtn.textContent = 'Stop Animation';
+                    animate();
+                }
+            });
+        
+            // Resize handler to maintain responsiveness
+            window.addEventListener('resize', initializeAnimation);
+        });
+    </script>
+</body>
+</html>
